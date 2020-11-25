@@ -1,0 +1,51 @@
+<header class="header-6">
+  <div class="branding">
+    <a href="#" class="nav-link">
+      <clr-icon shape="vm-bug"></clr-icon>
+      <span class="title">Time Official</span>
+    </a>
+  </div>
+  <div class="header-nav">
+    <a href="#" class="active nav-link"><span class="nav-text">Home</span></a>
+  </div>
+  <div class="header-actions">
+    <a href="#" class="nav-link nav-icon" aria-label="settings">
+      <clr-icon shape="cog"></clr-icon>
+    </a>
+  </div>
+</header>
+<form clrForm>
+  <clr-input-container>
+    <label>วันที่เริ่มต้น</label>
+    <input type="date" placeholder="0000-00-00" clrInput [(ngModel)]="work_sdate" name="work_sdate" required />
+  </clr-input-container>
+  <clr-input-container>
+    <label>วันที่สิ้นสุด</label>
+    <input type="date" placeholder="0000-00-00" clrInput [(ngModel)]="work_edate" name="work_edate" required />
+  </clr-input-container>
+  <button class="btn btn-success" (click)="getInfo()">ค้นหา</button>
+</form>
+
+<clr-datagrid>
+  <clr-dg-column>ID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'fullname'">fullname</clr-dg-column>
+  <clr-dg-column [clrDgField]="'work_date_in'">work_date_in</clr-dg-column>
+  <clr-dg-column [clrDgField]="'work_date_out'">work_date_out</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let i of items">
+    <clr-dg-cell>{{i.id}}</clr-dg-cell>
+    <clr-dg-cell>{{i.fullname}}</clr-dg-cell>
+    <clr-dg-cell>{{i.work_date_in | date:'yyyy-MM-dd HH:mm:ss' }}</clr-dg-cell>
+    <clr-dg-cell>{{i.work_date_out | date:'yyyy-MM-dd HH:mm:ss'}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <!-- {{items.length}} items -->
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Users per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+      of {{pagination.totalItems}} items
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+<router-outlet></router-outlet>
