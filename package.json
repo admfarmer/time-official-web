@@ -24,6 +24,8 @@
     "@clr/ui": "4.0.6",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "moment-timezone": "^0.5.32",
+    "mqtt": "^4.2.6",
+    "ngx-countdown": "^11.0.0",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.10.2",
     "tslib": "^2.0.0",

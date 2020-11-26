@@ -36,7 +36,9 @@
     <clr-dg-cell>{{i.id}}</clr-dg-cell>
     <clr-dg-cell>{{i.fullname}}</clr-dg-cell>
     <clr-dg-cell>{{i.work_date_in | date:'yyyy-MM-dd HH:mm:ss' }}</clr-dg-cell>
-    <clr-dg-cell>{{i.work_date_out | date:'yyyy-MM-dd HH:mm:ss'}}</clr-dg-cell>
+    <clr-dg-cell *ngIf="i.work_date_out != '0000-00-00 00:00:00'">{{i.work_date_out | date:'yyyy-MM-dd HH:mm:ss'}}
+    </clr-dg-cell>
+    <clr-dg-cell *ngIf="i.work_date_out == '0000-00-00 00:00:00'"> </clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>
