@@ -27,10 +27,10 @@
 </form>
 
 <clr-datagrid>
-  <clr-dg-column>ID</clr-dg-column>
-  <clr-dg-column [clrDgField]="'fullname'">fullname</clr-dg-column>
-  <clr-dg-column [clrDgField]="'work_date_in'">work_date_in</clr-dg-column>
-  <clr-dg-column [clrDgField]="'work_date_out'">work_date_out</clr-dg-column>
+  <clr-dg-column>NO</clr-dg-column>
+  <clr-dg-column [clrDgField]="'fullname'">ชื่อ - สกุล</clr-dg-column>
+  <clr-dg-column [clrDgField]="'work_date_in'">เวลาเข้างาน</clr-dg-column>
+  <clr-dg-column [clrDgField]="'work_date_out'">เวลาออกงาน</clr-dg-column>
 
   <clr-dg-row *clrDgItems="let i of items">
     <clr-dg-cell>{{i.id}}</clr-dg-cell>
