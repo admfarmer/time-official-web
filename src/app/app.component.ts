@@ -193,9 +193,9 @@ export class AppComponent implements OnInit {
     this.fullname = i.fullname;
     this.work_date_in = i.work_date_in;
     this.work_date_out = i.work_date_out;
-    this.pictime_in = `http://10.0.0.9/pictime/${i.cid}_${moment(i.work_date_in).tz('Asia/Bangkok').format('YYYY-MM-DD_HHmmss')}.jpg`;
+    this.pictime_in = `http://10.0.0.9/pictime/${i.cid}_${moment(i.work_date_in).tz('Asia/Bangkok').format('YYYY-MM-DD HHmmss')}.jpg`;
     if (i.work_date_out != '0000-00-00 00:00:00') {
-      this.pictime_out = `http://10.0.0.9/pictime/${i.cid}_${moment(i.work_date_out).tz('Asia/Bangkok').format('YYYY-MM-DD_HHmmss')}.jpg`;
+      this.pictime_out = `http://10.0.0.9/pictime/${i.cid}_${moment(i.work_date_out).tz('Asia/Bangkok').format('YYYY-MM-DD HHmmss')}.jpg`;
     } else {
       this.pictime_out = null;
     }
