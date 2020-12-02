@@ -39,6 +39,7 @@
             <th>ชื่อ - สกุล</th>
             <th> เวลาเข้างาน</th>
             <th>เวลาออกงาน</th>
+            <th>##</th>
           </tr>
         </thead>
         <tbody>
@@ -49,10 +50,43 @@
             <td *ngIf="i.work_date_out != '0000-00-00 00:00:00'">{{ i.work_date_out | date:'yyyy-MM-dd HH:mm:ss' }}
             </td>
             <td *ngIf="i.work_date_out == '0000-00-00 00:00:00'"></td>
+            <td><button class="btn btn-primary btn-sm" (click)="Detail(i)">รายละเอียด</button></td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 </div>
+
+<clr-modal [(clrModalOpen)]="opened" [clrModalClosable]="false" [clrModalSize]="'xl'">
+  <h3 class="modal-title">Detail</h3>
+  <div class="modal-body">
+    <p>CID : {{cid}}</p>
+    <p>fullname : {{fullname}}</p>
+    <p>work_date_in : {{work_date_in | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+    <p *ngIf="work_date_out != '0000-00-00 00:00:00'">work_date_out : {{work_date_out | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+    <p *ngIf="work_date_out == '0000-00-00 00:00:00'">work_date_out : </p>
+    <p>pictime_in : {{pictime_in}}</p>
+    <div class="card-block">
+      <div class="card-media-block">
+        <div class="card-img">
+          <img src="{{pictime_in}}" alt="..." />
+        </div>
+      </div>
+    </div>
+    <p>pictime_out : {{pictime_out}}</p>
+    <div class="card-block">
+      <div class="card-media-block">
+        <div class="card-img">
+          <img src="{{pictime_out}}" alt="..." />
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="opened = false" (click)="Clos()">Clos</button>
+  </div>
+</clr-modal>
+
 <router-outlet></router-outlet>

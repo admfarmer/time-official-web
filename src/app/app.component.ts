@@ -25,6 +25,16 @@ export class AppComponent implements OnInit {
   notifyPassword = null;
 
   isOffline = false;
+  opened = false;
+
+  cid: any;
+  fullname: any;
+  work_date_in: any;
+  work_date_out: any;
+
+  pictime_in: any;
+  pictime_out: any;
+
 
   constructor(
     private timeOfficialService: TimeOfficialService,
@@ -174,4 +184,29 @@ export class AppComponent implements OnInit {
 
   }
 
+  Detail(item) {
+    this.opened = true;
+    let i = item;
+    console.log(i);
+
+    this.cid = i.cid;
+    this.fullname = i.fullname;
+    this.work_date_in = i.work_date_in;
+    this.work_date_out = i.work_date_out;
+    this.pictime_in = `http://10.0.0.9/pictime/${i.cid}_${moment(i.work_date_in).tz('Asia/Bangkok').format('YYYY-MM-DD_HHmmss')}.jpg`;
+    if (i.work_date_out != '0000-00-00 00:00:00') {
+      this.pictime_out = `http://10.0.0.9/pictime/${i.cid}_${moment(i.work_date_out).tz('Asia/Bangkok').format('YYYY-MM-DD_HHmmss')}.jpg`;
+    } else {
+      this.pictime_out = null;
+    }
+
+  }
+  Clos() {
+    this.opened = false;
+
+    this.cid = null;
+    this.fullname = null;
+    this.work_date_in = null;
+    this.work_date_out = null;
+  }
 }
