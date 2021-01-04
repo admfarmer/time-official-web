@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
       // console.log(error);
     }
 
-    const topic = `timeofficial`;
+    const topic = `timeofficial/full`;
     const that = this;
 
     this.client.on('message', (topic, payload) => {
