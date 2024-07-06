@@ -53,8 +53,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getInfo();
-    this.connectWebSocket();
+    if(sessionStorage.getItem('token')){
+      this.token = 'Login Success';
+      this.getInfo();
+      this.connectWebSocket();  
+    }
   }
 
   public unsafePublish(topic: string, message: string): void {
@@ -85,6 +88,9 @@ export class AppComponent implements OnInit {
         }
         this.username = null
         this.password = null
+        this.getInfo();
+        this.connectWebSocket();  
+
       } else {
         // this.alertService.error('เกิดข้อผิดพลาด');
       }
