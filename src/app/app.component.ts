@@ -76,14 +76,15 @@ export class AppComponent implements OnInit {
 
   async getLogin() {
     try {
-      const rs: any = await this.timeOfficialService.select_date(this.username, this.password);
+      const rs: any = await this.timeOfficialService.login(this.username, this.password);
       if (rs.token) {
         sessionStorage.setItem('token',rs.token)
         console.log(sessionStorage.getItem('token'));
         if(sessionStorage.getItem('token')){
             this.token = 'Login Success';
         }
-        
+        this.username = null
+        this.password = null
       } else {
         // this.alertService.error('เกิดข้อผิดพลาด');
       }
