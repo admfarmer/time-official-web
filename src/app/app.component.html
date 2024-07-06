@@ -10,7 +10,7 @@
   </div>
   <div class="header-actions">
     <a href="#" class="nav-link nav-icon" aria-label="settings">
-      <clr-icon shape="cog"></clr-icon>
+      <clr-icon shape="cog"(click)="getLogOut()"></clr-icon>
     </a>
   </div>
 </header>
@@ -49,30 +49,30 @@
 
     </div>
   </section>
-  <table id="excel-table" class="table">
-    <thead>
-      <tr>
-        <th>NO</th>
-        <th>ชื่อ - สกุล</th>
-        <th>เวลาเข้างาน</th>
-        <th>เวลาออกงาน</th>
-        <th>##</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let i of items">
-        <td>{{ i.id}}</td>
-        <td>{{ i.fullname }}</td>
-        <td>{{ i.work_date_in | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-        <td *ngIf="i.work_date_out != '0000-00-00 00:00:00'">{{ i.work_date_out | date:'yyyy-MM-dd HH:mm:ss' }}
-        </td>
-        <td *ngIf="i.work_date_out == '0000-00-00 00:00:00'"></td>
-        <td><button class="btn btn-primary btn-sm" (click)="Detail(i)">รายละเอียด</button></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
 
+</div>
+<table id="excel-table" class="table">
+  <thead>
+    <tr>
+      <th>NO</th>
+      <th>ชื่อ - สกุล</th>
+      <th>เวลาเข้างาน</th>
+      <th>เวลาออกงาน</th>
+      <th>##</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let i of items">
+      <td>{{ i.id}}</td>
+      <td>{{ i.fullname }}</td>
+      <td>{{ i.work_date_in | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td *ngIf="i.work_date_out != '0000-00-00 00:00:00'">{{ i.work_date_out | date:'yyyy-MM-dd HH:mm:ss' }}
+      </td>
+      <td *ngIf="i.work_date_out == '0000-00-00 00:00:00'"></td>
+      <td><button class="btn btn-primary btn-sm" (click)="Detail(i)">รายละเอียด</button></td>
+    </tr>
+  </tbody>
+</table>
 <clr-modal [(clrModalOpen)]="opened" [clrModalClosable]="false" [clrModalSize]="'xl'">
   <h3 class="modal-title">Detail</h3>
   <div class="modal-body">

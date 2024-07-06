@@ -88,8 +88,7 @@ export class AppComponent implements OnInit {
         }
         this.username = null
         this.password = null
-        this.getInfo();
-        this.connectWebSocket();  
+        window.location.reload()
 
       } else {
         // this.alertService.error('เกิดข้อผิดพลาด');
@@ -239,5 +238,10 @@ export class AppComponent implements OnInit {
     this.fullname = null;
     this.work_date_in = null;
     this.work_date_out = null;
+  }
+
+  async getLogOut() {
+    sessionStorage.removeItem('token')
+    window.location.reload()
   }
 }
