@@ -19,6 +19,19 @@
     <div class="modal-body">
       <form clrForm>
         <clr-input-container>
+          <label>username</label>
+          <input type="text" placeholder="username" clrInput [(ngModel)]="username" name="username" required />
+        </clr-input-container>
+        <clr-input-container>
+          <label>password</label>
+          <input type="password" clrInput [(ngModel)]="password" name="password" required />
+        </clr-input-container>
+        <button class="btn btn-success" (click)="getLogin()">{{token}}</button>
+      </form>
+     </div> 
+    <div class="modal-body">
+      <form clrForm>
+        <clr-input-container>
           <label>วันที่เริ่มต้น</label>
           <input type="date" placeholder="0000-00-00" clrInput [(ngModel)]="work_sdate" name="work_sdate" required />
         </clr-input-container>
@@ -37,7 +50,7 @@
           <tr>
             <th>NO</th>
             <th>ชื่อ - สกุล</th>
-            <th> เวลาเข้างาน</th>
+            <th>เวลาเข้างาน</th>
             <th>เวลาออกงาน</th>
             <th>##</th>
           </tr>

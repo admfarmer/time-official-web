@@ -18,11 +18,14 @@ export class TimeOfficialService {
     };
   }
 
+  async login(username:string,password:string) {
+    const _url = `${this.apiUrl}/login`;
+    return this.httpClient.post(_url,{ username:username,password:password }, this.httpOptions).toPromise();
+  }
   async info() {
     const _url = `${this.apiUrl}/workTime/info`;
     return this.httpClient.get(_url, this.httpOptions).toPromise();
   }
-
   async select_date(work_sdate: any, work_edate: any) {
     const _url = `${this.apiUrl}/workTime/select_date?work_sdate=${work_sdate}&work_edate=${work_edate}`;
     return this.httpClient.get(_url, this.httpOptions).toPromise();

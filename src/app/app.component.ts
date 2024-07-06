@@ -14,6 +14,10 @@ import * as XLSX from 'xlsx';
 export class AppComponent implements OnInit {
   @ViewChild(CountdownComponent) counter: CountdownComponent;
 
+  username: any;
+  password: any;
+  token: string = 'Login Token';
+
   items: any = [];
   info: any = {};
   work_sdate: any;
@@ -66,6 +70,26 @@ export class AppComponent implements OnInit {
       this.client.end(true);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+
+  async getLogin() {
+    try {
+      const rs: any = await this.timeOfficialService.select_date(this.username, this.password);
+      if (rs.token) {
+        sessionStorage.setItem('token',rs.token)
+        console.log(sessionStorage.getItem('token'));
+        if(sessionStorage.getItem('token')){
+            this.token = 'Login Success';
+        }
+        
+      } else {
+        // this.alertService.error('เกิดข้อผิดพลาด');
+      }
+    } catch (error) {
+      console.log(error);
+      // this.alertService.error();
     }
   }
 
