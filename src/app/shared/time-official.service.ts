@@ -5,15 +5,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TimeOfficialService {
-  httpOptions: any
-  token: any;
+  constructor(@Inject('API_URL') private apiUrl: string, private httpClient: HttpClient) {}
 
-  constructor(@Inject('API_URL') private apiUrl: string, private httpClient: HttpClient) {
-    this.token = sessionStorage.getItem('token');
-    this.httpOptions = {
+  private get httpOptions() {
+    const token = sessionStorage.getItem('token');
+    return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.token
+        Authorization: 'Bearer ' + (token || '')
       })
     };
   }

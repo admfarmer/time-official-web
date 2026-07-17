@@ -28,48 +28,73 @@
         </clr-input-container>
         <button class="btn btn-success" (click)="getLogin()">{{token}}</button>
       </form>
-     </div> 
+     </div>
 
-    <div class="modal-body" *ngIf="token == 'Login Success'">
-      <form clrForm>
+    <div class="modal-body" *ngIf="isLoggedIn">
+      <div class="dashboard-grid">
+        <!-- <div class="dashboard-card">
+          <div class="dashboard-card-title">ช่วงวันที่</div>
+          <div class="dashboard-card-value">{{ dateRangeLabel }}</div>
+        </div> -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">จำนวนทะเบียน</div>
+          <div class="dashboard-card-value">{{ totalRecords }}</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">จำนวนพนักงาน</div>
+          <div class="dashboard-card-value">{{ uniqueStaffCount }}</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">ออกงานแล้ว</div>
+          <div class="dashboard-card-value">{{ totalCheckedOut }}</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">รอออกงาน</div>
+          <div class="dashboard-card-value">{{ totalPendingOut }}</div>
+        </div>
+      </div>
+      <form clrForm class="report-form">
         <clr-input-container>
-          <label>วันที่เริ่มต้น</label>
-          <input type="date" placeholder="0000-00-00" clrInput [(ngModel)]="work_sdate" name="work_sdate" required />
+          <label class="input-group" >วันที่เริ่มต้น</label>
+          <input class="input-group" type="date" placeholder="0000-00-00" clrInput [(ngModel)]="work_sdate" name="work_sdate" required />
         </clr-input-container>
         <clr-input-container>
-          <label>วันที่สิ้นสุด</label>
-          <input type="date" placeholder="0000-00-00" clrInput [(ngModel)]="work_edate" name="work_edate" required />
+          <label class="input-group" >วันที่สิ้นสุด</label>
+          <input class="input-group" type="date" placeholder="0000-00-00" clrInput [(ngModel)]="work_edate" name="work_edate" required />
         </clr-input-container>
-        <button class="btn btn-success" (click)="getInfo()">ค้นหา</button>
+        <button type="button" class="btn btn-success" (click)="getInfo()">ค้นหา</button>
       </form>
-      <h3 class="modal-title">รายงานลงเวลาบุคลากรโรงพยาบาล</h3>
-      <button class="btn btn-success" (click)="exportexcel()">Download</button>
-
-
-
+      <div class="report-actions">
+        <h3 class="modal-title">รายงานลงเวลาบุคลากรโรงพยาบาล</h3>
+        <button type="button" class="btn btn-success" (click)="exportexcel()">Download</button>
+      </div>
     </div>
   </section>
 
 </div>
-<table id="excel-table" class="table" *ngIf="token == 'Login Success'">
+<table id="excel-table" class="table" *ngIf="isLoggedIn">
   <thead>
     <tr>
       <th>NO</th>
       <th>ชื่อ - สกุล</th>
-      <th>เวลาเข้างาน</th>
-      <th>เวลาออกงาน</th>
+      <th>วันที่</th>
+      <th>เวลาเข้า</th>
+      <th>เวลาออก</th>
       <th>##</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let i of items">
-      <td>{{ i.id}}</td>
-      <td>{{ i.fullname }}</td>
-      <td>{{ i.work_date_in | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-      <td *ngIf="i.work_date_out != '0000-00-00 00:00:00'">{{ i.work_date_out | date:'yyyy-MM-dd HH:mm:ss' }}
+    <tr *ngFor="let group of personDayGroups; let idx = index">
+      <td>{{ idx + 1 }}</td>
+      <td>{{ group.fullname }}</td>
+      <td>{{ group.date }}</td>
+      <td class="grouped-times">
+        <span *ngFor="let entry of group.entries">{{ entry.inTime }}</span>
       </td>
-      <td *ngIf="i.work_date_out == '0000-00-00 00:00:00'"></td>
-      <td><button class="btn btn-primary btn-sm" (click)="Detail(i)">รายละเอียด</button></td>
+      <td class="grouped-times">
+        <span *ngFor="let entry of group.entries">{{ entry.outTime }}</span>
+      </td>
+      <td><button class="btn btn-primary btn-sm" (click)="Detail(group)">รายละเอียด</button></td>
     </tr>
   </tbody>
 </table>

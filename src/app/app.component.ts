@@ -52,11 +52,101 @@ export class AppComponent implements OnInit {
     this.work_edate = moment(Date()).tz('Asia/Bangkok').format('YYYY-MM-DD');
   }
 
+  get isLoggedIn(): boolean {
+    return this.token === 'Login Success';
+  }
+
+  get totalRecords(): number {
+    return Array.isArray(this.items) ? this.items.length : 0;
+  }
+
+  get totalCheckedOut(): number {
+    return Array.isArray(this.items)
+      ? this.items.filter((i: any) => i.work_date_out && i.work_date_out !== '0000-00-00 00:00:00').length
+      : 0;
+  }
+
+  get totalPendingOut(): number {
+    return this.totalRecords - this.totalCheckedOut;
+  }
+
+  get uniqueStaffCount(): number {
+    if (!Array.isArray(this.items)) {
+      return 0;
+    }
+    return new Set(this.items.map((i: any) => i.fullname)).size;
+  }
+
+  get personDayGroups(): any[] {
+    if (!Array.isArray(this.items) || this.items.length === 0) {
+      return [];
+    }
+
+    const groups = new Map<string, any>();
+
+    this.items.forEach((item: any) => {
+      const fullname = item.fullname || 'ไม่ระบุ';
+      const date = item.work_date_in
+        ? moment(item.work_date_in).tz('Asia/Bangkok').format('YYYY-MM-DD')
+        : '';
+      const key = `${fullname}|${date}`;
+      if (!groups.has(key)) {
+        groups.set(key, {
+          fullname,
+          date,
+          inTimes: [],
+          outTimes: [],
+          entries: [],
+          latestTime: 0
+        });
+      }
+
+      const group = groups.get(key);
+      const checkInTime = item.work_date_in ? moment(item.work_date_in).valueOf() : 0;
+      const checkOutTime = item.work_date_out && item.work_date_out !== '0000-00-00 00:00:00'
+        ? moment(item.work_date_out).valueOf()
+        : 0;
+      group.latestTime = Math.max(group.latestTime, checkInTime, checkOutTime);
+      group.entries.push({
+        inTime: item.work_date_in
+          ? moment(item.work_date_in).tz('Asia/Bangkok').format('HH:mm:ss')
+          : '-',
+        outTime: item.work_date_out && item.work_date_out !== '0000-00-00 00:00:00'
+          ? moment(item.work_date_out).tz('Asia/Bangkok').format('HH:mm:ss')
+          : '-',
+        timestamp: Math.max(checkInTime, checkOutTime)
+      });
+      group.inTimes.push(
+        item.work_date_in
+          ? moment(item.work_date_in).tz('Asia/Bangkok').format('HH:mm:ss')
+          : '-'
+      );
+      group.outTimes.push(
+        item.work_date_out && item.work_date_out !== '0000-00-00 00:00:00'
+          ? moment(item.work_date_out).tz('Asia/Bangkok').format('HH:mm:ss')
+          : '-'
+      );
+    });
+
+    return Array.from(groups.values())
+      .map((group: any) => ({
+        ...group,
+        inTimes: group.inTimes.sort().reverse(),
+        outTimes: group.outTimes.sort().reverse(),
+        entries: group.entries.sort((first: any, second: any) => second.timestamp - first.timestamp)
+      }))
+      .sort((first: any, second: any) => second.latestTime - first.latestTime);
+  }
+
+  get dateRangeLabel(): string {
+    return `${this.work_sdate} - ${this.work_edate}`;
+  }
+
   ngOnInit() {
-    if(sessionStorage.getItem('token')){
+    if (sessionStorage.getItem('token')) {
       this.token = 'Login Success';
       this.getInfo();
-      this.connectWebSocket();  
+      this.connectWebSocket();
     }
   }
 
@@ -81,15 +171,12 @@ export class AppComponent implements OnInit {
     try {
       const rs: any = await this.timeOfficialService.login(this.username, this.password);
       if (rs.token) {
-        sessionStorage.setItem('token',rs.token)
-        console.log(sessionStorage.getItem('token'));
-        if(sessionStorage.getItem('token')){
-            this.token = 'Login Success';
-        }
-        this.username = null
-        this.password = null
-        window.location.reload()
-
+        sessionStorage.setItem('token', rs.token);
+        this.token = 'Login Success';
+        this.username = null;
+        this.password = null;
+        this.getInfo();
+        this.connectWebSocket();
       } else {
         // this.alertService.error('เกิดข้อผิดพลาด');
       }
@@ -98,6 +185,18 @@ export class AppComponent implements OnInit {
       // this.alertService.error();
     }
   }
+
+  // getLogOut() {
+  //   sessionStorage.removeItem('token');
+  //   this.token = 'Login Token';
+  //   this.items = [];
+  //   this.opened = false;
+  //   try {
+  //     this.client?.end(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
 
   async getInfo() {

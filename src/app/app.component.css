@@ -1,0 +1,91 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-card {
+  background: #ffffff;
+  border: 1px solid #d9dee0;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+}
+
+.dashboard-card-title {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-card-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.report-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.report-form clr-input-container {
+  flex: 1 1 200px;
+}
+
+.report-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+#excel-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#excel-table th,
+#excel-table td {
+  font-size: 0.9rem;
+  padding: 0.9rem 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+#excel-table th {
+  background: #f8fafc;
+  color: #334155;
+  text-align: center;
+}
+
+#excel-table tbody tr:hover {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.grouped-times {
+  white-space: nowrap;
+}
+
+.grouped-times span {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.grouped-times span:last-child {
+  margin-bottom: 0;
+}
+.input-group {
+    font-size: .9rem;
+  /* font-weight: 700; */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
