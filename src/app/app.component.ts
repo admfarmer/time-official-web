@@ -300,17 +300,26 @@ export class AppComponent implements OnInit {
 
 
   exportexcel(): void {
-    /* table id is passed over here */
-    let element = document.getElementById('excel-table');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+    if (!Array.isArray(this.items) || this.items.length === 0) {
+      return;
+    }
 
-    /* generate workbook and add the worksheet */
+    const rows = this.items.map((item: any, idx: number) => ({
+      NO: idx + 1,
+      cid: item.cid || '',
+      ชื่อ_สกุล: item.fullname || '',
+      วันที่เข้า: item.work_date_in
+        ? moment(item.work_date_in).tz('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
+        : '',
+      วันที่ออก: item.work_date_out && item.work_date_out !== '0000-00-00 00:00:00'
+        ? moment(item.work_date_out).tz('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
+        : '-',
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(rows);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    /* save to file */
-    XLSX.writeFile(wb, 'timeofficial-export.xlsx');
-
+    XLSX.utils.book_append_sheet(wb, ws, 'รายงานลงเวลา');
+    XLSX.writeFile(wb, `timeofficial_${this.work_sdate}_${this.work_edate}.xlsx`);
   }
 
   Detail(item) {
